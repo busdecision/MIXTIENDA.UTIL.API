@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DistritoSeeder::class);
         $this->call(ColegioSeeder::class);
         $this->call(GradoEscolarSeeder::class);
+        $this->call(ProductoAndLangSeeder::class);
+        $this->call(ColoresSeeder::class);
+        $this->call(GrupoProductoSeeder::class);
     }
 }

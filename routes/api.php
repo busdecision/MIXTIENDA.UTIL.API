@@ -51,6 +51,9 @@ Route::group(['middleware'=> 'auth:api'], function(){
     //VALIDATE IF EXISTS SCHOOL NAME
     Route::get('validate-school-name/{name}', 'API\SchoolController@validateName');
 
+    //SEARCH PRODUCT-GROUP
+    Route::get('search-product-group/{param}', 'API\ProductGroupController@search');
+
 });
 
 
