@@ -54,6 +54,12 @@ Route::group(['middleware'=> 'auth:api'], function(){
     //SEARCH PRODUCT-GROUP
     Route::get('search-product-group/{param}', 'API\ProductGroupController@search');
 
+    //CRUD PRODUCT-GROUP
+    Route::resource('product-group', 'API\ProductGroupController');
+
+    //CRUD COLOR
+    Route::resource('color', 'API\ColorController');
+
 });
 
 
