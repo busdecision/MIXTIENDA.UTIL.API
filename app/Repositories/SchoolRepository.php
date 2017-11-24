@@ -35,15 +35,6 @@ class SchoolRepository
 
     public function save($request)
     {
-
-        $id_colegio = $request->get('id_colegio');
-
-        $validateIfExists = $this->find($id_colegio);
-
-        if(isset($validateIfExists)){
-            return response()->json(["error" => [ "message" => "Este ID ya existe"]], 400);
-        }
-
         $des_colegio = $request->get('des_colegio');
         $id_distrito = $request->get('id_distrito');
         $observacion = $request->get('observacion');
@@ -51,7 +42,6 @@ class SchoolRepository
 
         $new_school = new School();
 
-        $new_school->id_colegio = $id_colegio;
         $new_school->des_colegio = $des_colegio;
         $new_school->id_distrito = $id_distrito;
         $new_school->observacion = $observacion;

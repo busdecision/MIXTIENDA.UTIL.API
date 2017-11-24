@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ProductGroup;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductGroupRepository
 {
@@ -12,7 +13,14 @@ class ProductGroupRepository
         $cod_grupo_producto = $request->get('cod_grupo_producto');
         $des_grupo_producto = $request->get('des_grupo_producto');
         $id_color = $request->get('id_color');
-        $products_id = $request->get('products_id');
+
+        $products = $request->get('product');
+        $products = new Collection($products);
+
+        $products_id = $products->map(function($item){
+            return $item['id_product'];
+        });
+
 
         $new_product_group = new ProductGroup();
 
@@ -28,8 +36,12 @@ class ProductGroupRepository
 
     public function update($request, $id)
     {
-        $products_id = $request->get('products_id');
+        $products = $request->get('product');
+        $products = new Collection($products);
 
+        $products_id = $products->map(function($item){
+            return $item['id_product'];
+        });
 
         $product_group = ProductGroup::find($id);
 
