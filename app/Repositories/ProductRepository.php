@@ -16,9 +16,20 @@ class ProductRepository
         $filtered_products = [];
 
         if ($param) {
-            //$filtered_products = Product::where('des_grupo_producto', 'LIKE', '%' . $param . '%')->get();
+            $filtered_products = \DB::table('psyk_product as p')
+                                ->select(['*'])
+                                ->join('psyk_product_lang as l', 'p.id_product', '=', 'l.id_product')
+                                ->where('l.description','LIKE', '%'. $param . '%')
+                                ->where('l.id_shop','=', 1)
+                                ->where('l.id_lang', '=', 2)
+                                ->get();
         } else {
-            $filtered_products= Product::all();
+            $filtered_products= \DB::table('psyk_product as p')
+                                ->select(['*'])
+                                ->join('psyk_product_lang as l', 'p.id_product', '=', 'l.id_product')
+                                ->where('l.id_shop','=', 1)
+                                ->where('l.id_lang', '=', 2)
+                                ->get();;
         }
 
         return $filtered_products;

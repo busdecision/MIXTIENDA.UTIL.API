@@ -56,7 +56,22 @@ class ProductGroupRepository
 
     public function find($id)
     {
+        $formated_product = [];
         $productGroup = ProductGroup::with(['product.lang'])->find($id);
+
+        $productGroup = $productGroup->toArray();
+
+        foreach($productGroup['product'] as $p){
+            $formated_product[] =  (object)[
+                "id_product" => $p['id_product'],
+                "id_lang" =>$p['lang'][0]['id_lang'],
+                "id_shop" => $p['lang'][0]['id_shop'],
+                "description"=> $p['lang'][0]['description'],
+                "description_short" => $p['lang'][0]['description_short'],
+            ];
+
+        }
+        $productGroup['product'] = $formated_product;
         return $productGroup;
     }
 

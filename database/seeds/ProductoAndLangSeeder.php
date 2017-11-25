@@ -28,16 +28,23 @@ class ProductoAndLangSeeder extends Seeder
             [
                 "id_product" => 1,
                 "id_lang" => 2,
-                "id_shop" => "SCHP1",
+                "id_shop" => 1,
                 "description" => "Test description 1",
-                "description_short" => "Test description shor 1"
+                "description_short" => "Test description short 1"
             ],
             [
                 "id_product" => 2,
                 "id_lang" => 3,
-                "id_shop" => "SCHP2",
+                "id_shop" => 2,
                 "description" => "Test description 2",
-                "description_short" => "Test description shor 2"
+                "description_short" => "Test description short 2"
+            ],
+            [
+                "id_product" => 3,
+                "id_lang" => 2,
+                "id_shop" => 1,
+                "description" => "Test description 3",
+                "description_short" => "Test description short 3"
             ]
         ];
 
