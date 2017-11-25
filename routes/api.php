@@ -51,6 +51,20 @@ Route::group(['middleware'=> 'auth:api'], function(){
     //VALIDATE IF EXISTS SCHOOL NAME
     Route::get('validate-school-name/{name}', 'API\SchoolController@validateName');
 
+    //SEARCH PRODUCT-GROUP
+    Route::get('search-product-group/{param}', 'API\ProductGroupController@search');
+
+    //CRUD PRODUCT-GROUP
+    Route::resource('product-group', 'API\ProductGroupController');
+
+    //CRUD COLOR
+    Route::resource('color', 'API\ColorController');
+
+    //CRUD PRODUCT
+    Route::resource('product', 'API\ProductController');
+
+    Route::get('search-product/{param}', 'API\ProductController@search');
+
 });
 
 
