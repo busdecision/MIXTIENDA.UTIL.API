@@ -65,6 +65,15 @@ Route::group(['middleware'=> 'auth:api'], function(){
 
     Route::get('search-product/{param}', 'API\ProductController@search');
 
+    //SEARCH LISTA UTILES
+    Route::post('search-utiles/{param}', 'API\ListaController@search');
+
+    //PARAMETER CRUD
+    Route::resource('util', 'API\ListaController');
+
+    //PARAMETER CRUD
+    Route::resource('parameter', 'API\ParameterController');
+
 });
 
 
