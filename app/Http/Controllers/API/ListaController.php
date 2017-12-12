@@ -23,6 +23,11 @@ class ListaController extends Controller
         return $this->listaRepository->search($search_param, $size);
     }
 
+    public function show($id)
+    {
+        return $this->listaRepository->find($id);
+    }
+
     public function store(Request $request)
     {
         return $this->listaRepository->save($request);

@@ -10,6 +10,34 @@ use Illuminate\Support\Collection;
 
 class ListaRepository
 {
+    public function find($id)
+    {
+        if ($id) {
+            $lista = Lista::with(['grupoProducto'])->find($id);
+            $pivot = SchoolGradePivot::find($lista->id_grado_colegio);
+            $lista->id_colegio = $pivot->id_colegio;
+            $lista->id_grado_escolar = $pivot->id_grado_escolar;
+            $grupoProducto = $lista->grupoProducto()->get();
+
+            $formated = $grupoProducto->map(function ($item) {
+                $item->cantidad = $item->pivot->cantidad;
+                $item->des_detalle = $item->pivot->des_detalle;
+                return $item;
+            });
+
+            $n_lista = new \stdClass();
+            $n_lista->id_lista = $lista->id_lista;
+            $n_lista->periodo = $lista->periodo;
+            $n_lista->id_lista_archivo = $lista->id_lista_archivo;
+            $n_lista->id_grado_colegio = $lista->id_grado_colegio;
+            $n_lista->id_colegio = $lista->id_colegio;
+            $n_lista->id_grado_escolar = $lista->id_grado_escolar;
+            $n_lista->grupo_producto = $formated;
+
+            return response()->json($n_lista);
+
+        }
+    }
     public function search($param, $size)
     {
         $q = \DB::table('zlista as lista')
@@ -22,7 +50,6 @@ class ListaRepository
             $q = $q->where('colegio.des_colegio', 'LIKE', '%' . $param . '%');
         }
 
-        //dd($param, $size);
         return $q->paginate($size);
 
     }
@@ -58,9 +85,6 @@ class ListaRepository
             $school_grade_id = $schoolGrade2['id_grado_colegio'];
         }
 
-        if($school_grade_id == null){
-            dd("errorr", $schoolGrade['id_grado_colegio'], $updateSchool->id_grado_colegio);
-        }
         //creating new lista
         $lista = new Lista();
         $lista->id_lista_archivo = $id_lista_archivo;
@@ -74,9 +98,20 @@ class ListaRepository
 
         $lista->save();
 
-        $lista->productGroup()->attach($productsGroups_id);
+        foreach ($productsGroups as $group) {
+            $r = \DB::table('zlista_detalle')->insert([
+                "id_lista" => $lista->id_lista,
+                "id_grupo_producto" => $group['id_grupo_producto'],
+                "cantidad" => $group['cantidad'],
+                "des_detalle" => $group['des_detalle'],
+            ]);
 
-        $lista->save();
+        }
+
+
+        //$lista->grupoProducto()->attach($productsGroups_id);
+
+        //$lista->save();
 
         return $lista;
 

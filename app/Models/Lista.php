@@ -30,9 +30,9 @@ class Lista extends Model
         return $this->belongsTo(PivotSchoolGrade::class, 'id_grado_colegio');
     }
 
-    public function productGroup()
+    public function grupoProducto()
     {
-        return $this->belongsToMany(ProductGroup::class, 'zlista_detalle', 'id_lista', 'id_grupo_producto');
+        return $this->belongsToMany(ProductGroup::class, 'zlista_detalle', 'id_lista', 'id_grupo_producto')->withPivot('cantidad', 'des_detalle');
     }
 
 }
