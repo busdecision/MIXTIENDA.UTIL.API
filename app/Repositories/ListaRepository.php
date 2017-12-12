@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Lista;
+use App\Models\School;
+use App\Models\SchoolGrade;
 use App\Models\SchoolGradePivot;
 use Illuminate\Support\Collection;
 
@@ -42,30 +44,68 @@ class ListaRepository
         //getting pivot table
         $schoolGrade = SchoolGradePivot::where('id_colegio', $id_school)->where('id_grado_escolar', $id_school_grade)->first();
 
-        //creating new lista
-        $lita = new Lista();
+        $school_grade_id = null;
 
-        $lita->id_lista_archivo = $id_lista_archivo;
-        $lita->id_grado_colegio = $schoolGrade['id_grado_colegio'];
-        $lita->periodo = $periodo;
+        if($schoolGrade){
+            $school_grade_id = $schoolGrade['id_grado_colegio'];
+        }
+        else{
+            $updateSchool = School::find($id_school);
+            $updateSchool->schoolGrades()->attach($id_school_grade);
+            $updateSchool->save();
+            $schoolGrade2 = SchoolGradePivot::where('id_colegio', $id_school)->where('id_grado_escolar', $id_school_grade)->first();
 
-        if (!($this->verifyPeriod($lita->id_grado_colegio, $lita->periodo))) {
-            return response()->json(["errors" => "El periodo ya ha sido registrado"], 404);
+            $school_grade_id = $schoolGrade2['id_grado_colegio'];
         }
 
-        $lita->save();
+        if($school_grade_id == null){
+            dd("errorr", $schoolGrade['id_grado_colegio'], $updateSchool->id_grado_colegio);
+        }
+        //creating new lista
+        $lista = new Lista();
+        $lista->id_lista_archivo = $id_lista_archivo;
+        $lista->id_grado_colegio = $school_grade_id;
+        $lista->periodo = $periodo;
 
-        $lita->productGroup()->attach($productsGroups_id);
+        $res = $this->verifyPeriod($lista->id_grado_colegio, $lista->periodo);
+        if (!($res['result'])) {
+            return response()->json(["errors" => "El periodo ya ha sido registrado"], 403);
+        }
 
-        $lita->save();
+        $lista->save();
 
-        return $lita;
+        $lista->productGroup()->attach($productsGroups_id);
+
+        $lista->save();
+
+        return $lista;
 
     }
 
     public function verifyPeriod($gradeID, $period)
     {
+        $res = [
+            "result" => true
+        ];
         $lista = Lista::where('periodo', $period)->where('id_grado_colegio', $gradeID)->first();
-        return sizeof($lista) > 0 ? false : true;
+
+        $res['result'] = sizeof($lista) > 0 ? false : true;
+
+        return $res;
+    }
+
+    public function verifyPeriodBySchool($id_colegio, $id_grado_colegio, $period)
+    {
+        $res = ["result" => true];
+        $schoolGrade = SchoolGradePivot::where('id_colegio', $id_colegio)->where('id_grado_escolar', $id_grado_colegio)->first();
+
+        if ($schoolGrade == null) {
+            $res['result'] = true;
+        } else {
+            $lista = Lista::where('periodo', $period)->where('id_grado_colegio', $schoolGrade->id_grado_colegio)->first();
+            $res['result'] = sizeof($lista) > 0 ? false : true;
+        }
+
+        return $res;
     }
 }

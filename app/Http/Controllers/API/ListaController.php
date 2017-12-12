@@ -27,4 +27,13 @@ class ListaController extends Controller
     {
         return $this->listaRepository->save($request);
     }
+
+    public function verifyPeriod(Request $request)
+    {
+        $id_colegio = $request->get('id_colegio');
+        $id_grado_colegio = $request->get('id_grado_escolar');
+        $period = $request->get('period');
+
+        return $this->listaRepository->verifyPeriodBySchool($id_colegio, $id_grado_colegio, $period);
+    }
 }

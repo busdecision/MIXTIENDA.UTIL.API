@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductGroupRepository
 {
+    public function all(){
+
+        return ProductGroup::all();
+    }
+
     public function save($request)
     {
 

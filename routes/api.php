@@ -74,6 +74,9 @@ Route::group(['middleware'=> 'auth:api'], function(){
     //PARAMETER CRUD
     Route::resource('parameter', 'API\ParameterController');
 
+    //VERIFY PERIOD
+    Route::post('verify-period', 'API\ListaController@verifyPeriod');
+
 });
 
 
