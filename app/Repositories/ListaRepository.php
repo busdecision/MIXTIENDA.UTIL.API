@@ -143,4 +143,28 @@ class ListaRepository
 
         return $res;
     }
+    public function update($request, $id)
+    {
+        $productsGroups = $request->get('grupo_producto');
+        $productsGroups = new Collection($productsGroups);
+
+        $remove = \DB::table('zlista_detalle')->where([
+            "id_lista" => $id
+        ])->delete();
+
+        foreach ($productsGroups as $group) {
+            $r = \DB::table('zlista_detalle')->insert([
+                "id_lista" => $id,
+                "id_grupo_producto" => $group['id_grupo_producto'],
+                "cantidad" => $group['cantidad'],
+                "des_detalle" => $group['des_detalle'],
+            ]);
+
+        }
+
+        //borramos lista grupo producto
+
+
+        //
+    }
 }

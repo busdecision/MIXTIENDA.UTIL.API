@@ -33,6 +33,12 @@ class ListaController extends Controller
         return $this->listaRepository->save($request);
     }
 
+    public function update(Request $request, $id)
+    {
+
+        return $this->listaRepository->update($request, $id);
+    }
+
     public function verifyPeriod(Request $request)
     {
         $id_colegio = $request->get('id_colegio');
