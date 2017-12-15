@@ -145,12 +145,22 @@ class ListaRepository
     }
     public function update($request, $id)
     {
+        $colegio_id = $request->get('id_colegio');
+        $grado_id = $request->get('id_grado_escolar');
+
+        $oldLista = Lista::find($id);
+        $pivot =  SchoolGradePivot::where('id_colegio', $colegio_id)->where('id_grado_escolar', $grado_id)->first();
+
+        $oldLista->id_grado_colegio = $pivot['id_grado_colegio'];
+        $oldLista->save();
+
         $productsGroups = $request->get('grupo_producto');
         $productsGroups = new Collection($productsGroups);
 
         $remove = \DB::table('zlista_detalle')->where([
             "id_lista" => $id
         ])->delete();
+
 
         foreach ($productsGroups as $group) {
             $r = \DB::table('zlista_detalle')->insert([
@@ -161,10 +171,5 @@ class ListaRepository
             ]);
 
         }
-
-        //borramos lista grupo producto
-
-
-        //
     }
 }

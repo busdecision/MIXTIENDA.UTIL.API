@@ -10,7 +10,7 @@ class SchoolRepository
     public function all()
     {
 
-        return School::all();
+        return School::with(['schoolGrades'])->get();
     }
 
     public function find($id)
