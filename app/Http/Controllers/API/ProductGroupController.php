@@ -15,6 +15,10 @@ class ProductGroupController extends Controller
         $this->productGroupRepository = $productGroupRepository;
     }
 
+    public function index(){
+        return $this->productGroupRepository->all();
+    }
+
     public function show($id)
     {
         return $this->productGroupRepository->find($id);

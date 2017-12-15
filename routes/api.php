@@ -65,6 +65,20 @@ Route::group(['middleware'=> 'auth:api'], function(){
 
     Route::get('search-product/{param}', 'API\ProductController@search');
 
+    //SEARCH LISTA UTILES
+    Route::post('search-utiles/{param}', 'API\ListaController@search');
+
+    //PARAMETER CRUD
+    Route::resource('util', 'API\ListaController');
+
+    //PARAMETER CRUD
+    Route::resource('parameter', 'API\ParameterController');
+
+    //VERIFY PERIOD
+    Route::post('verify-period', 'API\ListaController@verifyPeriod');
+
+    Route::resource('user', 'API\UserController');
+
 });
 
 
