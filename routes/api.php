@@ -79,6 +79,9 @@ Route::group(['middleware'=> 'auth:api'], function(){
 
     Route::resource('user', 'API\UserController');
 
+    //SEARCH ARCHIVO
+    Route::post('search-archivo/{param}', 'API\ArchivoController@search');
+
 });
 
 
