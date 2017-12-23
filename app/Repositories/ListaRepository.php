@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Archivo;
 use App\Models\Lista;
 use App\Models\School;
 use App\Models\SchoolGrade;
@@ -97,6 +98,10 @@ class ListaRepository
         }
 
         $lista->save();
+
+        $archivo = Archivo::find($id_lista_archivo);
+        $archivo->id_estado_archivo = 2;
+        $archivo->save();
 
         foreach ($productsGroups as $group) {
             $r = \DB::table('zlista_detalle')->insert([
