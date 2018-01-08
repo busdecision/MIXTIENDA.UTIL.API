@@ -26,9 +26,12 @@ class SchoolController extends Controller
         return $this->schoolRepository->find($id);
     }
 
-    public function search($param)
+    public function search(Request $request, $param)
     {
-        return $this->schoolRepository->search($param);
+        $size = $request->get('size');
+        $search_param = $param != "null" ? $param : null;
+
+        return $this->schoolRepository->search($search_param, $size);
     }
 
     public function store(Request $request)

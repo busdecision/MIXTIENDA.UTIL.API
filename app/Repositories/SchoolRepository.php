@@ -19,14 +19,14 @@ class SchoolRepository
         return $school;
     }
 
-    public function search($param)
+    public function search($param, $size)
     {
         $filtered_schools = [];
-
         if ($param) {
-            $filtered_schools = School::where('des_colegio', 'LIKE', '%' . $param . '%')->get();
+            $filtered_schools = School::where('des_colegio', 'LIKE', '%' . $param . '%')->paginate($size);
         } else {
-            $filtered_schools::all();
+
+            $filtered_schools = School::paginate($size);
         }
 
         return $filtered_schools;
