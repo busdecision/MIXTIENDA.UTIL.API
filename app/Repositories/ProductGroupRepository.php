@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductGroup;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class ProductGroupRepository
 {
@@ -14,7 +15,7 @@ class ProductGroupRepository
 
     public function save($request)
     {
-
+        $user = Auth::user();
         $cod_grupo_producto = $request->get('cod_grupo_producto');
         $des_grupo_producto = $request->get('des_grupo_producto');
         $id_color = $request->get('id_color');
@@ -32,6 +33,7 @@ class ProductGroupRepository
         $new_product_group->cod_grupo_producto = $cod_grupo_producto;
         $new_product_group->des_grupo_producto = $des_grupo_producto;
         $new_product_group->id_color = $id_color;
+        $new_product_group->id_usuario_creacion = $user->id;
 
         $new_product_group->save();
 
@@ -41,6 +43,8 @@ class ProductGroupRepository
 
     public function update($request, $id)
     {
+        $user = Auth::user();
+
         $products = $request->get('product');
         $products = new Collection($products);
 
@@ -53,6 +57,7 @@ class ProductGroupRepository
         $product_group->cod_grupo_producto = $request->get('cod_grupo_producto');
         $product_group->des_grupo_producto = $request->get('des_grupo_producto');
         $product_group->id_color = $request->get('id_color');
+        $product_group->id_usuario_modificiacion = $user->id;
 
         $product_group->save();
 

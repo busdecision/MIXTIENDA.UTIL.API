@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\School;
+use Illuminate\Support\Facades\Auth;
 use Mockery\CountValidator\Exception;
 
 class SchoolRepository
@@ -35,6 +36,8 @@ class SchoolRepository
 
     public function save($request)
     {
+        $user = Auth::user();
+
         $des_colegio = $request->get('des_colegio');
         $id_distrito = $request->get('id_distrito');
         $observacion = $request->get('observacion');
@@ -45,6 +48,7 @@ class SchoolRepository
         $new_school->des_colegio = $des_colegio;
         $new_school->id_distrito = $id_distrito;
         $new_school->observacion = $observacion;
+        $new_school->id_usuario_creacion = $user->id;
 
         $new_school->save();
 
@@ -53,6 +57,7 @@ class SchoolRepository
 
     public function update($request, $id)
     {
+        $user = Auth::user();
 
         $school_grades_id = $request->get('school_grades_id');
 
@@ -62,6 +67,7 @@ class SchoolRepository
         $school->des_colegio = $request->get('des_colegio');
         $school->id_distrito = $request->get('id_distrito');
         $school->observacion = $request->get('observacion');
+        $school->id_usuario_modificacion = $user->id;
 
         $school->save();
 
