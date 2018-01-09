@@ -8,6 +8,7 @@ use App\Models\School;
 use App\Models\SchoolGrade;
 use App\Models\SchoolGradePivot;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class ListaRepository
 {
@@ -57,6 +58,8 @@ class ListaRepository
 
     public function save($request)
     {
+        $user = Auth::user();
+
         $id_school = $request->get('id_colegio');
         $id_school_grade = $request->get('id_grado_escolar');
         $id_lista_archivo = $request->get('id_lista_archivo');
@@ -91,6 +94,7 @@ class ListaRepository
         $lista->id_lista_archivo = $id_lista_archivo;
         $lista->id_grado_colegio = $school_grade_id;
         $lista->periodo = $periodo;
+        $lista->id_usuario_creacion = $user->id;
 
         $res = $this->verifyPeriod($lista->id_grado_colegio, $lista->periodo);
         if (!($res['result'])) {
@@ -150,6 +154,8 @@ class ListaRepository
     }
     public function update($request, $id)
     {
+        $user = Auth::user();
+
         $colegio_id = $request->get('id_colegio');
         $grado_id = $request->get('id_grado_escolar');
 
@@ -157,6 +163,7 @@ class ListaRepository
         $pivot =  SchoolGradePivot::where('id_colegio', $colegio_id)->where('id_grado_escolar', $grado_id)->first();
 
         $oldLista->id_grado_colegio = $pivot['id_grado_colegio'];
+        $oldLista->id_usuario_modificacion = $user->id;
         $oldLista->save();
 
         $productsGroups = $request->get('grupo_producto');
