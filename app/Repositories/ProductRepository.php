@@ -16,17 +16,17 @@ class ProductRepository
         $filtered_products = [];
 
         if ($param) {
-            $filtered_products = \DB::table('psyk_product as p')
+            $filtered_products = \DB::table('ps_product as p')
                                 ->select(['*'])
-                                ->join('psyk_product_lang as l', 'p.id_product', '=', 'l.id_product')
+                                ->join('ps_product_lang as l', 'p.id_product', '=', 'l.id_product')
                                 ->where('l.description','LIKE', '%'. $param . '%')
                                 ->where('l.id_shop','=', 1)
                                 ->where('l.id_lang', '=', 2)
                                 ->get();
         } else {
-            $filtered_products= \DB::table('psyk_product as p')
+            $filtered_products= \DB::table('ps_product as p')
                                 ->select(['*'])
-                                ->join('psyk_product_lang as l', 'p.id_product', '=', 'l.id_product')
+                                ->join('ps_product_lang as l', 'p.id_product', '=', 'l.id_product')
                                 ->where('l.id_shop','=', 1)
                                 ->where('l.id_lang', '=', 2)
                                 ->get();;

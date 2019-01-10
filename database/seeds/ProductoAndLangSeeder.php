@@ -21,7 +21,7 @@ class ProductoAndLangSeeder extends Seeder
         ];
 
         foreach ($products_ids as $id) {
-            \DB::table('psyk_product')->insert($id);
+            \DB::table('ps_product')->insert($id);
         }
 
         $product_langs = [
@@ -49,7 +49,7 @@ class ProductoAndLangSeeder extends Seeder
         ];
 
         foreach ($product_langs as $lang) {
-            \DB::table('psyk_product_lang')->insert($lang);
+            \DB::table('ps_product_lang')->insert($lang);
         }
     }
 }
