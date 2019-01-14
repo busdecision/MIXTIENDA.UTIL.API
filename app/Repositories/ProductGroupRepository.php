@@ -72,12 +72,14 @@ class ProductGroupRepository
         $productGroup = $productGroup->toArray();
 
         foreach($productGroup['product'] as $p){
+            $lang = $p['lang'];
+            
             $formated_product[] =  (object)[
                 "id_product" => $p['id_product'],
-                "id_lang" =>$p['lang'][0]['id_lang'],
-                "id_shop" => $p['lang'][0]['id_shop'],
-                "description"=> $p['lang'][0]['description'],
-                "description_short" => $p['lang'][0]['description_short'],
+                "id_lang" => !empty($lang) ? $lang[0]['id_lang'] : null,
+                "id_shop" => !empty($lang) ? $plang[0]['id_shop'] : null,
+                "description"=> !empty($lang) ? $lang[0]['description'] : null,
+                "description_short" => !empty($lang) ? $lang[0]['description_short'] : null,
             ];
 
         }

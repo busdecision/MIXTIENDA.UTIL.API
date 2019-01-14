@@ -12,7 +12,7 @@ class Product extends Model
      * @var string
      */
 
-    protected $table = "ps_product";
+    protected $table = "psryk_product";
 
     protected $primaryKey = "id_product";
 

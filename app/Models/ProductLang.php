@@ -12,7 +12,7 @@ class ProductLang extends Model
      * @var string
      */
 
-    protected $table = "ps_product_lang";
+    protected $table = "psryk_product_lang";
 
     protected $primaryKey = "id_product";
 

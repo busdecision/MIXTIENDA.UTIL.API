@@ -15,22 +15,17 @@ class ProductRepository
     {
         $filtered_products = [];
 
+        $query = \DB::table('psryk_product as p')
+                ->select(['*'])
+                ->join('psryk_product_lang as l', 'p.id_product', '=', 'l.id_product')
+                ->where('l.id_shop','=', 1)
+                ->where('l.id_lang', '=', 1);
+
         if ($param) {
-            $filtered_products = \DB::table('ps_product as p')
-                                ->select(['*'])
-                                ->join('ps_product_lang as l', 'p.id_product', '=', 'l.id_product')
-                                ->where('l.name','LIKE', '%'. $param . '%')
-                                ->where('l.id_shop','=', 1)
-                                ->where('l.id_lang', '=', 1)
-                                ->get();
-        } else {
-            $filtered_products= \DB::table('ps_product as p')
-                                ->select(['*'])
-                                ->join('ps_product_lang as l', 'p.id_product', '=', 'l.id_product')
-                                ->where('l.id_shop','=', 1)
-                                ->where('l.id_lang', '=', 1)
-                                ->get();;
+            $query = $query->where('l.name','LIKE', '%'. $param . '%');
         }
+
+        $filtered_products = $query->get();
 
         return $filtered_products;
     }
